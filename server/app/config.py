@@ -36,10 +36,16 @@ class Config:
     SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    # Engine options for SQLite WAL mode
-    SQLALCHEMY_ENGINE_OPTIONS = {
-        "connect_args": {"check_same_thread": False, "timeout": 15}
-    }
+    # Engine options: SQLite WAL mode or MySQL pool options
+    if SQLALCHEMY_DATABASE_URI.startswith("sqlite"):
+        SQLALCHEMY_ENGINE_OPTIONS = {
+            "connect_args": {"check_same_thread": False, "timeout": 15}
+        }
+    else:
+        SQLALCHEMY_ENGINE_OPTIONS = {
+            "pool_recycle": 280,
+            "pool_pre_ping": True,
+        }
 
     DEBUG = os.environ.get("FLASK_DEBUG", "True").lower() in ("true", "1")
     CORS_ORIGINS = ["http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:3000"]
