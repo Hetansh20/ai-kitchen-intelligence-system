@@ -132,3 +132,4 @@ def export_sqlite_to_mysql():
 
 if __name__ == "__main__":
     export_sqlite_to_mysql()
+
